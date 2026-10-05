@@ -170,5 +170,114 @@ void sinus() {
 
 
 void cosinus() {
-	return;
+	char err, c;
+	int n;
+	float x1, x2, dx, e, delta, x, rad, sum, real;
+
+	do {
+		err = 0;
+		printf("x1=");
+		if (scanf_s("%f", &x1) != 1) {
+			err = 1;
+			printf("Invalid input, enter only numbers\n");
+			clearInputBuffer();
+			continue;
+		}
+		while ((c = getchar()) == ' ' || c == '\t');
+		if (c != '\n') {
+			err = 1;
+			printf("Invalid input, enter only numbers\n");
+			clearInputBuffer();
+			continue;
+		}
+	} while (err != 0);
+
+	do {
+		err = 0;
+		printf("x2=");
+		if (scanf_s("%f", &x2) != 1) {
+			err = 1;
+			printf("Invalid input, enter only numbers\n");
+			clearInputBuffer();
+			continue;
+		}
+		while ((c = getchar()) == ' ' || c == '\t');
+		if (c != '\n') {
+			err = 1;
+			printf("Invalid input, enter only numbers\n");
+			clearInputBuffer();
+			continue;
+		}
+	} while (err != 0);
+
+	do {
+		err = 0;
+		printf("dx=");
+		if (scanf_s("%f", &dx) != 1) {
+			err = 1;
+			printf("Invalid input, enter only numbers\n");
+			clearInputBuffer();
+			continue;
+		}
+		while ((c = getchar()) == ' ' || c == '\t');
+		if (c != '\n') {
+			err = 1;
+			printf("Invalid input, enter only numbers\n");
+			clearInputBuffer();
+			continue;
+		}
+		else if (x1 != x2 && dx == 0) {
+			err = 1;
+			printf("dx can't be zero when x1 is not equal to x2\n");
+		}
+		else if (x1 > x2 && dx > 0) {
+			err = 1;
+			printf("When x1>x2, dx must be negative\n");
+		}
+		else if (x1 < x2 && dx < 0) {
+			err = 1;
+			printf("When x1<x2, dx must be positive\n");
+		}
+	} while (err != 0);
+
+	do {
+		err = 0;
+		printf("epsilon=");
+		if (scanf_s("%f", &e) != 1) {
+			err = 1;
+			printf("Invalid input, enter only numbers\n");
+			clearInputBuffer();
+			continue;
+		}
+		while ((c = getchar()) == ' ' || c == '\t');
+		if (c != '\n') {
+			err = 1;
+			printf("Invalid input, enter only numbers\n");
+			clearInputBuffer();
+			continue;
+		}
+		else if (e <= 0) {
+			err = 1;
+			printf("epsilon must be greater than zero\n");
+		}
+	} while (err != 0);
+
+	printf("\t\t---x---\t\t---cos(x)---\t\t---cos_t---\t\t---cos_x-cos_t---\n");
+
+	for (x = x1; (dx > 0) ? (x <= x2 + 1e-4f) : (x >= x2 - 1e-4f); x += dx) {
+		rad = radian(x);
+		delta = 1;
+		sum = 1;
+		n = 1;
+		do {
+			delta = delta * (-rad * rad) / (2 * n * (2 * n - 1));
+			sum += delta;
+			n += 1;
+		} while (fabs(delta) >= e);
+
+		real = cosf(rad);
+		printf("\t\t%f\t\t%f\t\t%f\t\t%f\n", x, real, sum, real - sum);
+
+		if (dx == 0) break;
+	}
 }
