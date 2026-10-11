@@ -178,7 +178,7 @@ void sinus() {
 		} while (fabs(delta) >= e);
 
 		real = sinf(rad);                   
-		printf("\t\t%f\t\t%f\t\t%f\t\t%f\n", x2, real, sum, real - sum); // check git
+		printf("\t\t%f\t\t%f\t\t%f\t\t%f\n", x2, real, sum, real - sum);
 	}
 }
 
