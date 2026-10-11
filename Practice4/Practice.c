@@ -7,7 +7,7 @@ const double PI = 3.14159265358979323846;
 void sinus();
 void cosinus();
 
-float radian(float x) {
+double radian(double x) {
 	return (x * PI / 180);
 }
 
@@ -58,12 +58,12 @@ int main() {
 void sinus() {
 	char err, c;
 	int n;	
-	float x1, x2, dx, e, delta, x, rad, sum, real;
+	double x1, x2, dx, e, delta, x, rad, sum, real;
 
 	do {
 		err = 0;
 		printf("x1=");
-		if (scanf_s("%f", &x1) != 1) {
+		if (scanf_s("%lf", &x1) != 1) {
 			err = 1;
 			printf("Invalid input, enter only numbers\n");
 			clearInputBuffer();
@@ -81,7 +81,7 @@ void sinus() {
 	do {
 		err = 0;
 		printf("x2=");
-		if (scanf_s("%f", &x2) != 1) {
+		if (scanf_s("%lf", &x2) != 1) {
 			err = 1;
 			printf("Invalid input, enter only numbers\n");
 			clearInputBuffer();
@@ -99,7 +99,7 @@ void sinus() {
 	do {
 		err = 0;
 		printf("dx=");
-		if (scanf_s("%f", &dx) != 1) {
+		if (scanf_s("%lf", &dx) != 1) {
 			err = 1;
 			printf("Invalid input, enter only numbers\n");
 			clearInputBuffer();
@@ -129,7 +129,7 @@ void sinus() {
 	do {
 		err = 0;
 		printf("epsilon=");
-		if (scanf_s("%f", &e) != 1) {
+		if (scanf_s("%lf", &e) != 1) {
 			err = 1;
 			printf("Invalid input, enter only numbers\n");
 			clearInputBuffer();
@@ -150,7 +150,7 @@ void sinus() {
 
 	printf("\t\t---x---\t\t---sin(x)---\t\t---sin_t---\t\t---sin_x-sin_t---\n");
 
-	for (x = x1; (dx > 0) ? (x <= x2 + 1e-4f) : (x >= x2 - 1e-4f); x += dx) {
+	for (x = x1; (dx > 0) ? (x <= x2) : (x >= x2); x += dx) {
 		rad = radian(x);
 		delta = rad;
 		sum = rad;
@@ -166,18 +166,32 @@ void sinus() {
 
 		if (dx == 0) break;
 	}
+	if (fabs(x - dx - x2) > 1e-9) {         
+		rad = radian(x2);
+		delta = rad;                         
+		sum = rad;                           
+		n = 1;
+		do {
+			delta = delta * (-rad * rad) / ((n + 1) * (n + 2));   
+			sum += delta;
+			n += 2;                        
+		} while (fabs(delta) >= e);
+
+		real = sinf(rad);                   
+		printf("\t\t%f\t\t%f\t\t%f\t\t%f\n", x2, real, sum, real - sum);
+	}
 }
 
 
 void cosinus() {
 	char err, c;
 	int n;
-	float x1, x2, dx, e, delta, x, rad, sum, real;
+	double x1, x2, dx, e, delta, x, rad, sum, real;
 
 	do {
 		err = 0;
 		printf("x1=");
-		if (scanf_s("%f", &x1) != 1) {
+		if (scanf_s("%lf", &x1) != 1) {
 			err = 1;
 			printf("Invalid input, enter only numbers\n");
 			clearInputBuffer();
@@ -195,7 +209,7 @@ void cosinus() {
 	do {
 		err = 0;
 		printf("x2=");
-		if (scanf_s("%f", &x2) != 1) {
+		if (scanf_s("%lf", &x2) != 1) {
 			err = 1;
 			printf("Invalid input, enter only numbers\n");
 			clearInputBuffer();
@@ -213,7 +227,7 @@ void cosinus() {
 	do {
 		err = 0;
 		printf("dx=");
-		if (scanf_s("%f", &dx) != 1) {
+		if (scanf_s("%lf", &dx) != 1) {
 			err = 1;
 			printf("Invalid input, enter only numbers\n");
 			clearInputBuffer();
@@ -243,7 +257,7 @@ void cosinus() {
 	do {
 		err = 0;
 		printf("epsilon=");
-		if (scanf_s("%f", &e) != 1) {
+		if (scanf_s("%lf", &e) != 1) {
 			err = 1;
 			printf("Invalid input, enter only numbers\n");
 			clearInputBuffer();
@@ -264,7 +278,7 @@ void cosinus() {
 
 	printf("\t\t---x---\t\t---cos(x)---\t\t---cos_t---\t\t---cos_x-cos_t---\n");
 
-	for (x = x1; (dx > 0) ? (x <= x2 + 1e-4f) : (x >= x2 - 1e-4f); x += dx) {
+	for (x = x1; (dx > 0) ? (x <= x2) : (x >= x2); x += dx) {
 		rad = radian(x);
 		delta = 1;
 		sum = 1;
@@ -278,6 +292,21 @@ void cosinus() {
 		real = cosf(rad);
 		printf("\t\t%f\t\t%f\t\t%f\t\t%f\n", x, real, sum, real - sum);
 
+
 		if (dx == 0) break;
+	}
+	if (fabs(x - dx - x2) > 1e-9) {
+		rad = radian(x2);
+		delta = 1;
+		sum = 1;
+		n = 1;
+		do {
+			delta = delta * (-rad * rad) / (2 * n * (2 * n - 1));
+			sum += delta;
+			n += 1;
+		} while (fabs(delta) >= e);
+
+		real = cosf(rad);
+		printf("\t\t%f\t\t%f\t\t%f\t\t%f\n", x2, real, sum, real - sum);
 	}
 }
